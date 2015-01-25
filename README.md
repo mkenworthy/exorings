@@ -1,5 +1,7 @@
 # exorings
-Tools for displaying and fitting giant extrasolar planet ring systems.
+
+Tools for displaying and fitting giant extrasolar planet ring systems,
+as detailed in Kenworthy and Mamakjek (2015).
 
 Download from github with git pull or the zip file.
 
