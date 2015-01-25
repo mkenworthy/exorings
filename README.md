@@ -4,7 +4,7 @@
  alt="J1407 Ring Model" title="J1407b rings" align="right" />
 
 These are Python tools for displaying and fitting giant extrasolar planet ring systems,
-as detailed in Kenworthy and Mamakjek (2015).
+as detailed in Kenworthy and Mamajek (2015).
 
 Download from github with git pull or the zip file.
 
