@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-import kepler
 import pyfits
 
 import exorings
@@ -21,6 +20,17 @@ mpl.interactive(True)
 # set sensible imshow defaults
 mpl.rc('image', interpolation='nearest', origin='lower', cmap='gray')
 mpl.rc('axes.formatter', limits=(-7, 7))
+
+G = 6.6738480e-11 # m3 kg-1 s-2
+yr = 365.242189669 * 86400  # sec
+msol = 1.98855e30 # kg
+rsol = 6.5500e8 # m
+mjup = 1.8986e27 # kg
+rjup = 6.9911e7 # m
+mearth = 5.97219e24 # kg
+mmoon = 7.3476e22 # kg
+au = 1.49597870700e11 # m
+pc = 3.0856e16 # m
 
 # switch - implemented from http://code.activestate.com/recipes/410692/
 
@@ -42,6 +52,46 @@ class switch(object):
             return True
         else:
             return False
+
+def Ptoa(P,m1,m2):
+    """calculate orbital radius from period
+
+    P period (years)
+    m1 mass of primary (M_sol)
+    m2 mass of secondary (M_jup)
+
+    returns
+    a semi-major axis (AU)
+    """
+
+    # a^3/P^2 = (G/4pipi) (m1 + m2)
+
+    c = G / (4. * np.pi * np.pi)
+
+    mu = (m1 * msol) + (m2 * mjup)
+
+    a3 = np.power(P * yr, 2.) * (c * mu)
+
+    return(np.power(a3,1./3.) / au)
+
+
+
+def vcirc(m1,m2,a):
+    """ Circular orbital velocity of m2 about m1 at distance a
+        m1 in Solar masses
+        m2 in Jupiter masses
+        a in AU
+        returns v in m/s
+    """
+
+    # http://en.wikipedia.org/wiki/Circular_orbit
+
+    mu = G * ((m1*msol) + (m2*mjup))
+    vcirc = np.power((mu / (a*au)), 0.5)
+    return(vcirc)
+
+
+
 
 def ringfunc(taun, *args):
     'cost function for ring fit to photometric data'
@@ -222,12 +272,12 @@ Pb = 5.5 # secondary period in Mjup
 t_ecl = 56. # length of eclipse in days
 
 # convert to an orbital velocity
-a = kepler.Ptoa(Pb, Mstar, Mb)
+a = Ptoa(Pb, Mstar, Mb)
 print 'Primary mass     = %5.2f  msol' % Mstar
 print 'Primary radius   = %5.2f  rsol' % Rstar
 print 'Secondary mass   = %5.2f  mjup' % Mb
 print 'Orbital radius   = %5.2f  AU' % a
-v = kepler.vcirc(Mstar, Mb, a)
+v = vcirc(Mstar, Mb, a)
 
 if vstar > 0:
     v = vstar
@@ -235,7 +285,7 @@ if vstar > 0:
 
 print 'Orbital velocity = %5.2f  km/s (use option -s to set new velocity)' % (v/1.e3)
 
-dstar = (Rstar * kepler.rsol * 2 / v) / 86400.
+dstar = (Rstar * rsol * 2 / v) / 86400.
 
 print 'Primary diameter = %5.2f  days' % dstar
 
