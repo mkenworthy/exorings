@@ -175,16 +175,26 @@ def ellipse_tangents(a, b, phi):
         dX0, dY0, tang
         dX0 - parametric parameter at which dX is zero
         dy0 - parametric parameter at which dY is zero
-        txaxis - tangent angle along x axis
+        txaxis - tangent angle along y=0 line for nonzero x
     """
 
-    dX0 = np.arctan(-(b/a)*np.tan(phi))
-    dY0 = np.arctan((b/a)/np.tan(phi))
+    # cos i = b/a
+    print phi
+    cosi = b/a
+    iang = np.arccos(cosi)
+    dX0 = np.arctan(-(cosi)*np.tan(phi))
+    dY0 = np.arctan((cosi)/np.tan(phi))
 
-    # what is t for Y(t) = 0 (i.e. x-axis)?
-    txaxis = np.arctan(-(a/b)*np.tan(phi))
+    # what is dy/dx along y=0 for nonzero values of x?
+    denom = np.sin(2*phi) * np.sin(iang) * np.sin(iang)
+    numer = 2 * (np.sin(phi)*np.sin(phi) + cosi*cosi * np.cos(phi)*np.cos(phi) )
 
-    return(dX0, dY0, txaxis)
+    tang = np.arctan(numer/denom)
+
+    print 'phi is %f rad' % phi
+    print 'tang is %f rad' % tang
+
+    return(dX0, dY0, tang)
 
 def ellipse_strip(r, tau, y, hjd_central, i, phi, star, width):
     """ calculate a strip of values suitable for star convolution
@@ -607,8 +617,8 @@ if __name__ == '__main__':
     a[0] -= yc
     a[1] -= xc
 
-    i_test = 60.
-    phi_test = 45.
+    i_test = 70.
+    phi_test = 10.
 
     # testing ring_to_sky and the inverse
 
@@ -683,7 +693,7 @@ if __name__ == '__main__':
 
     axre.plot(X+xc, Y+yc, c='white', linewidth=3)
 
-    (dX0, dY0, dYdXt0) = ellipse_tangents(a, b, phit)
+    (dX0, dY0, tangang) = ellipse_tangents(a, b, phit)
 
     (x1, y1, grad1) = ellipse_para(a, b, phit, dX0)
     (x2, y2, grad2) = ellipse_para(a, b, phit, dY0)
@@ -697,6 +707,13 @@ if __name__ == '__main__':
     a_test[0] += y2
     a_test[1] -= xc
 
+    # test the angle along y=0
+    tlen = 20
+    tx = 30
+    ty = 0
+    tdx = tlen * np.cos(tangang)
+    tdy = tlen * np.sin(tangang)
+
     # we should plot xc and see test_tan
     (test_im, test_tan) = ellipse_nest(a_test, i_test, phi_test)
     fig5 = plt.figure("ellipse_nest()")
@@ -705,6 +722,11 @@ if __name__ == '__main__':
     ax5.scatter(xx, test_im)
     ax6.scatter(xx, test_tan * 180. / np.pi)
     ax6.scatter(xx, np.sin(test_tan)* 180)
+
+    ttx = np.array((tx,tx+tdx))
+    tty = np.array((ty,ty+tdy))
+    axre.plot(ttx+xc, tty+yc, c='blue')
+    axre.scatter(tx+xc, ty+yc, c='blue')
 
     # vertical tangent
     axre.scatter(x1+xc, y1+yc, c='red', s=65)
