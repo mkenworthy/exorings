@@ -14,3 +14,17 @@ If you have `git`, `python` and `astropy` installed, then this should get you ed
 
 Explanations on how to use the exorings interface are on the [Quick Start](../../wiki/Quick-Start) page, along with all documentation and discussion on the [Exorings wiki](../../wiki/Home).
 
+## Citing this code
+
+The code is registered at the [ASCL](http://ascl.net/) at
+[ascl:1501.012](http://ascl.net/1501.012) and should be cited in papers
+as:
+
+    Kenworthy, M.A., 2015, Exorings, Astrophysics Source Code Library, record ascl:1501.012
+
+## License
+
+The code is released under an ISC license, which is functionally
+equivalent to the BSD 2-clause license but removes some language that
+is no longer necessary.
+
