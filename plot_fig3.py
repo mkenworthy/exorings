@@ -67,7 +67,7 @@ plot_gradient_fit(grad_time, grad_disk_fit * np.max(grad_mag), grad_mag, \
 
 # make ticks thicker
 for ax in figfit.axes: # go over all the subplots in the figure fig
-    for i in ax.spines.itervalues(): # ... and go over all the axes too...
+    for i in iter(ax.spines.values()): # ... and go over all the axes too...
         i.set_linewidth(2)
     ax.minorticks_on() # switch on the minor ticks
     # set the tick lengths and tick widths

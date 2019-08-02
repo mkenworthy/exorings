@@ -218,12 +218,12 @@ def ellipse_strip(r, tau, y, hjd_central, i, phi, star, width):
 
     agr = np.mgrid[:ny, :nx]
 
-    agr[0] -= yc
-    agr[1] -= xc
+    agr[0] = agr[0] - yc
+    agr[1] = agr[1] - xc
     agr = agr * dt
 
     # move up to the strip
-    agr[0] += y
+    agr[0] = agr[0] + y
 
     tau_disk, grad = ellipse_nest(agr, i, phi, r, tau)
 
@@ -272,8 +272,8 @@ def ring_mask_no_photometry(star, width, xt, yt, dt, i_deg, phi_deg):
 
     tsize = width / (star_x - 1)
 
-    sgr[0] -= yc
-    sgr[1] -= xc
+    sgr[0] = sgr[0] - yc
+    sgr[1] = sgr[1] - xc
     sgr = sgr * tsize
 
     masked = sgr[:, (star > 0)]
@@ -287,8 +287,8 @@ def ring_mask_no_photometry(star, width, xt, yt, dt, i_deg, phi_deg):
 
         # pass those points to the routine to return r for all those points
         agr2 = np.copy(masked)
-        agr2[0] += yt
-        agr2[1] += (x - dt)
+        agr2[0] = agr2[0] + yt
+        agr2[1] = agr2[1] + (x - dt)
 
         rell = ellipse(agr2, i_deg, phi_deg)
 
@@ -302,6 +302,8 @@ def ring_mask_no_photometry(star, width, xt, yt, dt, i_deg, phi_deg):
 
     # work up from zero r, find the boundaries for each bad masked ring
     drv = ring_valid[1:] - ring_valid[:-1]
+    print(drv)
+    #quit()
 
     ringstart = ring_radii[(drv < -0.5)]
     ringends = ring_radii[(drv > 0.5)]
@@ -376,8 +378,8 @@ def make_star_limbd(dstar_pix, u=0.0):
     'make a star disk with limb darkening'
     ke = np.mgrid[:dstar_pix, :dstar_pix]
     dp2 = (dstar_pix - 1) / 2
-    ke[0] -= dp2
-    ke[1] -= dp2
+    ke[0] = ke[0] - dp2
+    ke[1] = ke[1] - dp2
     re = np.sqrt(ke[0]*ke[0] + ke[1]*ke[1])
     ren = re / dp2
     mask = np.zeros_like(ren)
@@ -440,7 +442,7 @@ def print_ring_tau(rad, tau):
     n = 0
     for (r, t) in zip(rad, tau):
         print ('Ring %3d: tau = %5.3f out to radius %7.3f days' % (n, t, r))
-        n += 1
+        n = n + 1
 
 def print_ring_tau_latex(rad,tau):
     'pretty printing of ring radii and their tau values to a latex table'
@@ -448,7 +450,7 @@ def print_ring_tau_latex(rad,tau):
     from astropy.io import ascii
     for (r, t) in zip(rad, tau):
         print ('Ring %3d: tau = %5.3f out to radius %7.3f days' % (n, t, r))
-        n += 1
+        n = n + 1
     from astropy.table import Table
     exptau = -np.log(tau)
     t = Table([rad, exptau], names=['Radius', 'Tau'])
@@ -543,8 +545,8 @@ def draw_rings(r, tau, hjd_central, i, phi, p):
 
     agr = np.mgrid[:ny, :nx]
 
-    agr[0] -= yc
-    agr[1] -= xc
+    agr[0] = agr[0] - yc
+    agr[1] = agr[1] - xc
     agr = agr * resol
     # a is now in units of DAYS with the origin centered on J1407b
 
@@ -614,8 +616,8 @@ if __name__ == '__main__':
     a = np.mgrid[:201, :401]
     yc = 101
     xc = 201
-    a[0] -= yc
-    a[1] -= xc
+    a[0] = a[0] - yc
+    a[1] = a[1]  - xc
 
     i_test = 70.
     phi_test = 10.
@@ -704,8 +706,8 @@ if __name__ == '__main__':
     # now move up an Y=const. line to the dY0 position
     a_test = np.mgrid[:1, :401]
     xx = np.arange(401)
-    a_test[0] += y2
-    a_test[1] -= xc
+    a_test[0] = a_test[0] + y2
+    a_test[1] = a_test[1] -  xc
 
     # test the angle along y=0
     tlen = 20
@@ -776,4 +778,4 @@ if __name__ == '__main__':
     ax4.imshow(make_star_limbd(25, 0.6))
 
     plt.show()
-    raw_input('press return to continue')
+    e = input('press return to continue')

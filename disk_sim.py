@@ -4,8 +4,6 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-import pyfits
-
 import exorings
 import j1407
 
@@ -522,5 +520,5 @@ def onclick(event):
 cid = fig_fold.canvas.mpl_connect('key_press_event', onclick)
 plt.show()
 
-raw_input('press return to finish')
+e = input('press return to finish')
 exorings.write_ring_fits(fitsout, res, taun_rings, rad_rings, dstar)

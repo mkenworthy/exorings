@@ -104,7 +104,7 @@ p3v.errorbar(time, flux-flux_fit, flux_err, zorder=10, **eb)
 
 # adjust the ticks on the photometry plot
 for ax in fig_ringsv.axes: # go over all the subplots in the figure fig
-    for i in ax.spines.itervalues(): # ... and go over all the axes too...
+    for i in iter(ax.spines.values()): # ... and go over all the axes too...
         i.set_linewidth(2)
     ax.minorticks_on() # switch on the minor ticks
     # set the tick lengths and tick widths

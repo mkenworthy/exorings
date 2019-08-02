@@ -2,13 +2,16 @@
 
 from astropy.io import ascii
 import numpy as np
-import pyfits
+from astropy.io import fits
 
 def j1407_photom():
     'read in J1407 photometry with errors'
     dfile = '1SWASP+J140747.93-394542.6-detrend.fits'
-    with pyfits.open(dfile) as fpin:
-        tgtdata = fpin[1].data
+#    with pyfits.open(dfile) as fpin:
+#        tgtdata = fpin[1].data
+
+    hdu1 = fits.open(dfile)
+    tgtdata = hdu1[1].data
 
     fitcol = "SINVP_DETREND_010"
 

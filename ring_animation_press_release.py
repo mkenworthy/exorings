@@ -231,7 +231,7 @@ for now_hjd, now_zoom in zip(frame, frame_zoom):
         ha='right')
 
     # make ticks thicker
-    for isaa  in p2v.spines.itervalues(): # ... and go over all the axes too...
+    for isaa  in iter(p2v.spines.values()): # ... and go over all the axes too...
         isaa.set_linewidth(2)
     # set the tick lengths and tick widths
     p2v.tick_params('both', length=5, width=2, which='major')
