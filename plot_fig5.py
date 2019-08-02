@@ -13,7 +13,7 @@ mpl.rc('axes.formatter', limits=(-7, 7))
 
 # read in j1407 photometry
 (time, flux, flux_err) = j1407.j1407_photom_binned('j1407_bincc.dat', 54160.0, 54300.0)
-print 'number of photometric points: %d' % time.size
+print ('number of photometric points: %d' % time.size)
 
 # get j1407 gradients
 (grad_time, grad_mag, grad_mag_norm) = j1407.j1407_gradients('j1407_gradients.txt')
@@ -21,12 +21,12 @@ print 'number of photometric points: %d' % time.size
 try:
     opts, args = getopt.getopt(sys.argv[1:], "hr:o:s:", ["rfile=", "ofile=", "vstar="])
 except getopt.GetoptError:
-    print '%s -r <inputfile> -s <velocity in metres per second> -o <outputfile>' % sys.argv[0]
+    print ('%s -r <inputfile> -s <velocity in metres per second> -o <outputfile>' % sys.argv[0])
     sys.exit(2)
 
 for opt, arg in opts:
     if opt == '-h':
-        print help
+        print (help)
         sys.exit()
     elif opt in ("-r", "--rfile"):
         fitsin = arg
@@ -35,7 +35,7 @@ for opt, arg in opts:
     elif opt in ("-s", "--vstar"):
         v = np.array(float(arg))
 
-print 'Reading in ring and disk parameters from %s' % fitsin
+print ('Reading in ring and disk parameters from %s' % fitsin)
 (res, taun_rings, rad_rings, dstar) = exorings.read_ring_fits(fitsin)
 
 exorings.print_ring_tau(rad_rings, exorings.y_to_tau(taun_rings))
@@ -135,4 +135,3 @@ p3v.set_ylabel('Error')
 p2v.set_ylabel('Normalized Intensity')
 
 fig_ringsv.savefig(plotout)
-

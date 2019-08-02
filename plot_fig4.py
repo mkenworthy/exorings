@@ -32,17 +32,17 @@ flux_err = flux_err[goodp]
 flux = flux[goodp]
 time = time[goodp]
 
-print 'number of photometric points: %d' % time.size
+print ('number of photometric points: %d' % time.size)
 
 vstar = -1.
 try:
     opts, args = getopt.getopt(sys.argv[1:], "hr:o:s:", ["rfile=", "ofile=", "vstar="])
 except getopt.GetoptError:
-    print '%s -s <velocity> -r <inputfile> -o <outputfile>' % sys.argv[0]
+    print ('%s -s <velocity> -r <inputfile> -o <outputfile>' % sys.argv[0])
     sys.exit(2)
 for opt, arg in opts:
     if opt == '-h':
-        print help
+        print( help)
         sys.exit()
     elif opt in ("-r", "--rfile"):
         fitsin = arg
@@ -51,8 +51,8 @@ for opt, arg in opts:
     elif opt in ("-s", "--vstar"):
         vstar = np.array(float(arg))
 
-print 'ring file in  is %s' % fitsin
-print 'plot file out is %s' % plotout
+print ('ring file in  is %s' % fitsin)
+print ('plot file out is %s' % plotout)
 
 (res, taun_rings, rad_rings, dstar) = exorings.read_ring_fits(fitsin)
 
@@ -138,7 +138,7 @@ ny = dt.size/nx
 og = gridspec.GridSpecFromSubplotSpec(ny, nx, subplot_spec=gs[1], wspace=0.0, hspace=0.0)
 
 for i in xrange(dt.size):
-    print "image %d " % i
+    print ("image %d " % i)
     ep_center = hjd_minr + dt[i] + fiddle_time
     ax = plt.subplot(og[i])
 
@@ -185,4 +185,3 @@ for i in xrange(dt.size):
     ax.set_yticks([])
 
 fig.savefig(plotout)
-

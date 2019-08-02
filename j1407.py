@@ -22,27 +22,27 @@ def j1407_photom():
 
 def j1407_photom_binned(fin, phot_tmin, phot_tmax):
     'read in binned j1407 photometry'
-    print 'reading in j1407 photometry from %s' % fin
+    print ('reading in j1407 photometry from %s' % fin)
     # load in J1407 binned photometry curve
     tin = ascii.read(fin)
     time = tin['time']
     flux = tin['flux']
     flux_err = tin['flux_rms']
 
-    print 'restricting photometry to HJD range %.1f to %.1f' % (phot_tmin, phot_tmax)
+    print ('restricting photometry to HJD range %.1f to %.1f' % (phot_tmin, phot_tmax))
     goodp = (time > phot_tmin) * (time < phot_tmax)
 
     flux = flux[goodp]
     time = time[goodp]
     flux_err = flux_err[goodp]
 
-    print 'number of photometric points in J1407 light curve: %d' % time.size
+    print ('number of photometric points in J1407 light curve: %d' % time.size)
 
     return(time, flux, flux_err)
 
 def j1407_gradients(fin):
     'read in gradients of j1407 light curve'
-    print 'reading in gradients of light curve from %s' % fin
+    print ('reading in gradients of light curve from %s' % fin)
     grad = ascii.read(fin)
 
     grad_time = grad['col1'] + 54222.

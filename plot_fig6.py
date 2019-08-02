@@ -17,7 +17,7 @@ mpl.rc('axes.formatter', limits=(-7, 7))
 
 # read in j1407 photometry
 (time, flux, flux_err) = j1407.j1407_photom_binned('j1407_bincc.dat', 54160.0, 54300.0)
-print 'number of photometric points: %d' % time.size
+print ('number of photometric points: %d' % time.size)
 
 # get j1407 gradients
 (grad_time, grad_mag, grad_mag_norm) = j1407.j1407_gradients('j1407_gradients.txt')
@@ -25,12 +25,12 @@ print 'number of photometric points: %d' % time.size
 try:
     opts, args = getopt.getopt(sys.argv[1:], "hr:o:s:", ["rfile=", "ofile=", "vstar="])
 except getopt.GetoptError:
-    print '%s -r <inputfile> -s <velocity in metres per second> -o <outputfile>' % sys.argv[0]
+    print ('%s -r <inputfile> -s <velocity in metres per second> -o <outputfile>' % sys.argv[0])
     sys.exit(2)
 
 for opt, arg in opts:
     if opt == '-h':
-        print help
+        print (help)
         sys.exit()
     elif opt in ("-r", "--rfile"):
         fitsin = arg
@@ -39,7 +39,7 @@ for opt, arg in opts:
     elif opt in ("-s", "--vstar"):
         v = np.array(float(arg))
 
-print 'Reading in ring and disk parameters from %s' % fitsin
+print ('Reading in ring and disk parameters from %s' % fitsin)
 (res, taun_rings, rad_rings, dstar) = exorings.read_ring_fits(fitsin)
 
 exorings.print_ring_tau(rad_rings, exorings.y_to_tau(taun_rings))
@@ -111,7 +111,7 @@ surf_dens = 1./kappa # g cm-2
 #              kg    cm2/m2 m2/km2  km2/Mkm2
 k2 = surf_dens * 1e-3 * 1e4    * 1e6  * 1.e12 / mmoon
 
-print 'surf_dens %f g.cm-2 == kappa %f Mmoon/Mkm2' % (surf_dens, k2)
+print ('surf_dens %f g.cm-2 == kappa %f Mmoon/Mkm2' % (surf_dens, k2))
 
 # mass is kappa * (1 - exp(-tau)) / (1 - exp (-1.))
 
@@ -121,8 +121,8 @@ mr = np.copy(mass_ring)
 mr[(mr < 1e-6)] = 1e-6
 log_mr = np.log10(mr)
 
-print 'kappa is %.3f cm2 g-1' % kappa
-print 'total mass of all rings is %.3f Lunar masses' % np.sum(mass_ring)
+print ('kappa is %.3f cm2 g-1' % kappa)
+print ('total mass of all rings is %.3f Lunar masses' % np.sum(mass_ring))
 
 # optical depth of order unity and kappa
 pr.step(ring_radius / 1.e9, -np.log(exorings.y_to_tau(taun_rings)), \
@@ -146,8 +146,8 @@ pr.set_ylabel('Tau', fontsize=16)
 r0 = 60.2
 dr = 4.0
 mhill = np.power(((dr/2)/r0), 3.) * 3. * Mb
-print 'Mass of satellite due to Hill gap is %5.2f M_Jup' % mhill
-print 'Mass of satellite due to Hill gap is %5.2f M_earth' % (mhill * mjup / mearth)
+print ('Mass of satellite due to Hill gap is %5.2f M_Jup' % mhill)
+print ('Mass of satellite due to Hill gap is %5.2f M_earth' % (mhill * mjup / mearth))
 
 
 # AU axis
@@ -193,6 +193,6 @@ pr.vlines(np.array(r0), -5., 5, zorder=1, lw=2, color='blue')
 pr2.tick_params(axis='both', which='major', labelsize=14)
 pr.tick_params(axis='both', which='major', labelsize=14)
 
-print 'writing out to %s' % plotout
+print ('writing out to %s' % plotout)
 
 plt.savefig(plotout)

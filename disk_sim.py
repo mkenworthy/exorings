@@ -125,7 +125,7 @@ def calc_ring_stats(taun, t, f, f_err, rad_ri, re, k, dst, tmin, tmax):
     f_sel = f[mask]
     f_err_sel = f_err[mask]
 
-    print '%d points in time range %.2f to %.2f' % (t_sel.size, tmin, tmax)
+    print('%d points in time range %.2f to %.2f' % (t_sel.size, tmin, tmax))
 
     # interpolate the smoothed curve....
     ring_model = interp1d(g[0], g[1], kind='linear')
@@ -140,11 +140,11 @@ def calc_ring_stats(taun, t, f, f_err, rad_ri, re, k, dst, tmin, tmax):
     # degrees of freedom = number of photometry points - number of ring edges - 1
     dof = diff.size - taun.size - 1
     red_chisq = chisq / dof
-    print 'number of photometric = %d ' % diff.size
-    print 'number of ring edges  = %d ' % taun.size
-    print 'number of DOF         = %d ' % dof
-    print 'chi squared           = %.2f' % chisq
-    print ' reduced chi squared  = %.2f' % red_chisq
+    print('number of photometric = %d ' % diff.size)
+    print('number of ring edges  = %d ' % taun.size)
+    print('number of DOF         = %d ' % dof)
+    print('chi squared           = %.2f' % chisq)
+    print(' reduced chi squared  = %.2f' % red_chisq)
 
     # http://en.wikipedia.org/wiki/Bayesian_information_criterion
     # n - number of points in data
@@ -154,7 +154,7 @@ def calc_ring_stats(taun, t, f, f_err, rad_ri, re, k, dst, tmin, tmax):
     # dependent on the data points
 
     BIC = chisq + (taun.size) * np.log(diff.size)
-    print ' BIC                  = %.2f' % BIC
+    print(' BIC                  = %.2f' % BIC)
     return red_chisq
 
 nn = 1
@@ -208,10 +208,10 @@ def ind_ring_big(ring, r):
 rings_tmin = 54220. - 30.
 rings_tmax = 54220. + 30.
 
-print 'restricting statistics of KIC to HJD range %.1f to %.1f' % (rings_tmin, rings_tmax)
+print('restricting statistics of KIC to HJD range %.1f to %.1f' % (rings_tmin, rings_tmax))
 goodp_rings = (time > rings_tmin) * (time < rings_tmax)
 good_rings_npoints = goodp_rings.size
-print 'number of points for statistics of KIC is %d' % (good_rings_npoints)
+print('number of points for statistics of KIC is %d' % (good_rings_npoints))
 
 # get gradients
 (grad_time, grad_mag, grad_mag_norm) = j1407.j1407_gradients('j1407_gradients.txt')
@@ -228,7 +228,7 @@ tx = 54221.15
 vstar = -1
 
 def print_help():
-    print 'disk_sim.py -r <ringfile> -d <diskfile> -t [time of min HJD] -o <outputfile>'
+    print ('disk_sim.py -r <ringfile> -d <diskfile> -t [time of min HJD] -o <outputfile>')
 
 try:
     opts, args = getopt.getopt(sys.argv[1:], "hd:r:o:t:s:", \
@@ -250,10 +250,10 @@ for opt, arg in opts:
         fitsout = arg
     elif opt in ("-t", "--tx"):
         tx = np.array(float(arg))
-        print 'tx = time of central eclipse forced to be = ', tx
+        print ('tx = time of central eclipse forced to be = ', tx)
     elif opt in ("-s", "--vstar"):
         vstar = np.array(float(arg))
-print 'Output file is ', fitsout
+print ('Output file is ', fitsout)
 
 # read in or create the ring system tau and radii
 
@@ -273,27 +273,27 @@ t_ecl = 56. # length of eclipse in days
 
 # convert to an orbital velocity
 a = Ptoa(Pb, Mstar, Mb)
-print 'Primary mass     = %5.2f  msol' % Mstar
-print 'Primary radius   = %5.2f  rsol' % Rstar
-print 'Secondary mass   = %5.2f  mjup' % Mb
-print 'Orbital radius   = %5.2f  AU' % a
+print ('Primary mass     = %5.2f  msol' % Mstar)
+print ('Primary radius   = %5.2f  rsol' % Rstar)
+print ('Secondary mass   = %5.2f  mjup' % Mb)
+print ('Orbital radius   = %5.2f  AU' % a)
 v = vcirc(Mstar, Mb, a)
 
 if vstar > 0:
     v = vstar
-    print 'manual velocity of star is %.1f km.s-1' % v
+    print ('manual velocity of star is %.1f km.s-1' % v)
 
-print 'Orbital velocity = %5.2f  km/s (use option -s to set new velocity)' % (v/1.e3)
+print ('Orbital velocity = %5.2f  km/s (use option -s to set new velocity)' % (v/1.e3))
 
 dstar = (Rstar * rsol * 2 / v) / 86400.
 
-print 'Primary diameter = %5.2f  days' % dstar
+print ('Primary diameter = %5.2f  days' % dstar)
 
 if read_in_ring_parameters:
-    print 'Reading in rings from %s' % fitsin_ring
+    print ('Reading in rings from %s' % fitsin_ring)
     (resxx, taun_rings, rad_rings, xxxdstar) = exorings.read_ring_fits(fitsin_ring)
 else:
-    print "Starting with new rings...."
+    print ("Starting with new rings....")
     rad_rings = np.array([59.0])
     taun_rings = np.array([0.0])
     rad_rings = np.append(rad_rings, (100.))
@@ -302,11 +302,11 @@ else:
 exorings.print_ring_tau(rad_rings, exorings.y_to_tau(taun_rings))
 
 if read_in_disk_parameters:
-    print 'Reading in disk parameters from %s' % fitsin_disk
+    print ('Reading in disk parameters from %s' % fitsin_disk)
     (res, taun_ringsxx, rad_ringsxx, dstarxx) = exorings.read_ring_fits(fitsin_disk)
 else:
     # run minimizer to find best guess values
-    print 'No disk gradient parameters read in - refitting new ones....'
+    print ('No disk gradient parameters read in - refitting new ones....')
     res = fmin(costfunc, np.array([y, dt, i_deg, phi_deg]), maxiter=5000, \
         args=(grad_time, grad_mag_norm, tx))
 
@@ -326,16 +326,16 @@ hjd_to_ring = interp1d(samp_t, samp_r, kind='linear')
 
 ### RESULTS of fitting routine
 
-print ''
-print 'Disk parameters fitting to gradients'
-print '------------------------------------'
-print ''
-print ' impact parameter b   = %8.2f days' % res[0]
-print ' HJD min approach t_b = %8.2f days' % res[1]
-print ' disk inclination i   = %7.1f  deg' % res[2]
-print '        disk tilt phi = %7.1f  deg' % res[3]
-print ' HJD min gradient     = %8.2f days' % hjd_minr
-print '             rmin     = %8.2f days' % np.min(samp_r)
+print ('')
+print ('Disk parameters fitting to gradients')
+print ('------------------------------------')
+print ('')
+print (' impact parameter b   = %8.2f days' % res[0])
+print (' HJD min approach t_b = %8.2f days' % res[1])
+print (' disk inclination i   = %7.1f  deg' % res[2])
+print ('        disk tilt phi = %7.1f  deg' % res[3])
+print (' HJD min gradient     = %8.2f days' % hjd_minr)
+print ('             rmin     = %8.2f days' % np.min(samp_r))
 
 # http://en.wikipedia.org/wiki/Bayesian_information_criterion
 # n - number of points in data
@@ -395,13 +395,13 @@ h1.plot(np.abs(g[0]-hjd_minr), g[2], color='orange')
 h1.set_xlabel('Time from eclipse midpoint [days]')
 h1.set_ylabel('Transmission')
 
-print "Menu"
-print "a - add a ring"
-print "d - delete a ring boundary to the right"
-print "o - run Amoeba optimizer"
-print "v - display rings in vector format"
-print "r - display rings in pixel format (slow)"
-print ""
+print( "Menu")
+print ("a - add a ring")
+print ("d - delete a ring boundary to the right")
+print ("o - run Amoeba optimizer")
+print ("v - display rings in vector format")
+print ("r - display rings in pixel format (slow)")
+print ("")
 badring = 1
 
 def onclick(event):
@@ -413,7 +413,7 @@ def onclick(event):
 
         newt = event.xdata
         newtau = event.ydata
-        print 'newtau is %f' % newtau
+        print ('newtau is %f' % newtau)
         if newtau > 1.0:
             newtau = 1.0
         if newtau < 0.0:
@@ -432,10 +432,10 @@ def onclick(event):
             break
 
         if case('a'):
-            print 'a pressed, adding a new ring'
+            print ('a pressed, adding a new ring')
             # assume that r is ordered
 
-            print ' inserting new ring date %d and radius %d' % (newt, newr)
+            print (' inserting new ring date %d and radius %d' % (newt, newr))
             bigr = np.append(rad_rings, newr)
             bigtau = np.append(taun_rings, exorings.tau_to_y(newtau))
 
@@ -463,7 +463,7 @@ def onclick(event):
 
         if case('b'):
             badring *= -1
-            print badring
+            print( badring)
 
             break
 
@@ -474,10 +474,10 @@ def onclick(event):
             break
 
         if case('q'):
-            print 'q is for quitters'
+            print ('q is for quitters')
             break
         if case():
-            print 'not a recognised keypress'
+            print ('not a recognised keypress')
 
 
     # print stats of fit
@@ -524,4 +524,3 @@ plt.show()
 
 raw_input('press return to finish')
 exorings.write_ring_fits(fitsout, res, taun_rings, rad_rings, dstar)
-

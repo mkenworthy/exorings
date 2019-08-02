@@ -179,7 +179,7 @@ def ellipse_tangents(a, b, phi):
     """
 
     # cos i = b/a
-    print phi
+    print( phi)
     cosi = b/a
     iang = np.arccos(cosi)
     dX0 = np.arctan(-(cosi)*np.tan(phi))
@@ -191,8 +191,8 @@ def ellipse_tangents(a, b, phi):
 
     tang = np.arctan(numer/denom)
 
-    print 'phi is %f rad' % phi
-    print 'tang is %f rad' % tang
+    print ('phi is %f rad' % phi)
+    print ('tang is %f rad' % tang)
 
     return(dX0, dY0, tang)
 
@@ -419,7 +419,7 @@ def write_ring_fits(fitsname, res, taun_rings, radii, dstar):
 
     thdulist = fits.HDUList([prihdu, tbhdu])
     thdulist.writeto(fitsname, clobber=True)
-    print 'write_ring_fits: wrote FITS file to %s' % fitsname
+    print ('write_ring_fits: wrote FITS file to %s' % fitsname)
 
 def read_ring_fits(fitsname):
     hdulist = fits.open(fitsname)
@@ -439,7 +439,7 @@ def print_ring_tau(rad, tau):
     'pretty printing of ring radii and their tau values'
     n = 0
     for (r, t) in zip(rad, tau):
-        print 'Ring %3d: tau = %5.3f out to radius %7.3f days' % (n, t, r)
+        print ('Ring %3d: tau = %5.3f out to radius %7.3f days' % (n, t, r))
         n += 1
 
 def print_ring_tau_latex(rad,tau):
@@ -447,7 +447,7 @@ def print_ring_tau_latex(rad,tau):
     n = 0
     from astropy.io import ascii
     for (r, t) in zip(rad, tau):
-        print 'Ring %3d: tau = %5.3f out to radius %7.3f days' % (n, t, r)
+        print ('Ring %3d: tau = %5.3f out to radius %7.3f days' % (n, t, r))
         n += 1
     from astropy.table import Table
     exptau = -np.log(tau)
@@ -460,16 +460,16 @@ def print_ring_tau_latex(rad,tau):
         'preamble':r'\tablewidth{0pt} \tabletypesize{\scriptsize}' })
 
 def print_disk_parameters(res, minr_t, samp_r):
-    print ''
-    print 'Disk parameters fitting to gradients'
-    print '------------------------------------'
-    print ''
-    print ' impact parameter b   = %8.2f days' % res[0]
-    print ' HJD min approach t_b = %8.2f days' % res[1]
-    print ' disk inclination i   = %7.1f  deg' % res[2]
-    print '        disk tilt phi = %7.1f  deg' % res[3]
-    print ' HJD min gradient     = %8.2f days' % minr_t
-    print '             rmin     = %8.2f days' % np.min(samp_r)
+    print ('')
+    print ('Disk parameters fitting to gradients')
+    print ('------------------------------------')
+    print ('')
+    print (' impact parameter b   = %8.2f days' % res[0])
+    print (' HJD min approach t_b = %8.2f days' % res[1])
+    print (' disk inclination i   = %7.1f  deg' % res[2])
+    print ('        disk tilt phi = %7.1f  deg' % res[3])
+    print (' HJD min gradient     = %8.2f days' % minr_t)
+    print ('             rmin     = %8.2f days' % np.min(samp_r))
 
     # make latex table with values
     ss = r'\begin{eqnarray*}b =& %8.2f \rm{d} \\ t_b =& %8.2f \rm{d} \\ i_{disk} =& %5.1f^o \\ \phi =& %5.1f^o \\ t_\parallel =& %8.2f \rm{d}\end{eqnarray*}' % (res[0], res[1], res[2], res[3], minr_t)
@@ -698,8 +698,8 @@ if __name__ == '__main__':
     (x1, y1, grad1) = ellipse_para(a, b, phit, dX0)
     (x2, y2, grad2) = ellipse_para(a, b, phit, dY0)
 
-    print "grad check: %f" % (grad1*180./np.pi)
-    print "grad check: %f" % (grad2*180./np.pi)
+    print ("grad check: %f" % (grad1*180./np.pi))
+    print ("grad check: %f" % (grad2*180./np.pi))
 
     # now move up an Y=const. line to the dY0 position
     a_test = np.mgrid[:1, :401]
@@ -756,7 +756,7 @@ if __name__ == '__main__':
         axre.add_patch(newp)
 
     # test converting ring angles to ring tilt
-    print ring_tilt(i_test, phi_test)
+    print (ring_tilt(i_test, phi_test))
 
     # test
     fig = plt.figure("make_star_limbd()")

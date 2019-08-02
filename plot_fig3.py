@@ -23,7 +23,7 @@ def plot_gradient_fit(t, f, fn, xt, yt, p):
 try:
     opts, args = getopt.getopt(sys.argv[1:], "hd:o:", ["dfile=", "ofile="])
 except getopt.GetoptError:
-    print 'plot_disk_fit.py -d <disk input FITS> -o <output plot file>'
+    print ('plot_disk_fit.py -d <disk input FITS> -o <output plot file>')
     sys.exit(2)
 for opt, arg in opts:
     if opt == '-h':
@@ -38,7 +38,7 @@ for opt, arg in opts:
 (grad_time, grad_mag, grad_mag_norm) = j1407.j1407_gradients('j1407_gradients.txt')
 
 # read in the ring system tau and radii
-print 'Reading in disk parameters from %s' % fitsin_disk
+print ('Reading in disk parameters from %s' % fitsin_disk)
 (res, taun_ringsxx, rad_ringsxx, dstar) = exorings.read_ring_fits(fitsin_disk)
 
 # make the radius and projected gradient for the measured gradient points
@@ -77,6 +77,5 @@ for ax in figfit.axes: # go over all the subplots in the figure fig
 # adjust text size on the axes
 f2.tick_params(axis='both', which='major', labelsize=14)
 
-print 'writing plot out to file %s' % plotfileout
+print ('writing plot out to file %s' % plotfileout)
 plt.savefig(plotfileout)
-

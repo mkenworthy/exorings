@@ -25,7 +25,7 @@ mpl.rc('image', interpolation='nearest', origin='lower', cmap='gray')
 
 # read in j1407 photometry
 (time, flux, flux_err) = j1407.j1407_photom_binned('j1407_bincc.dat', 54160.0, 54300.0)
-print 'number of photometric points: %d' % time.size
+print ('number of photometric points: %d' % time.size)
 
 # get j1407 gradients
 (grad_time, grad_mag, grad_mag_norm) = j1407.j1407_gradients('j1407_gradients.txt')
@@ -34,12 +34,12 @@ print 'number of photometric points: %d' % time.size
 try:
     opts, args = getopt.getopt(sys.argv[1:], "hr:o:s:", ["rfile=", "ofile=", "vstar="])
 except getopt.GetoptError:
-    print '%s -r <inputfile> -s <velocity in metres per second> -o <outputfile>' % sys.argv[0]
+    print ('%s -r <inputfile> -s <velocity in metres per second> -o <outputfile>' % sys.argv[0])
     sys.exit(2)
 
 for opt, arg in opts:
     if opt == '-h':
-        print help
+        print (help)
         sys.exit()
     elif opt in ("-r", "--rfile"):
         fitsin = arg
@@ -48,7 +48,7 @@ for opt, arg in opts:
     elif opt in ("-s", "--vstar"):
         v = np.array(float(arg))
 
-print 'Reading in ring and disk parameters from %s' % fitsin
+print ('Reading in ring and disk parameters from %s' % fitsin)
 (res, taun_rings, rad_rings, dstar) = exorings.read_ring_fits(fitsin)
 
 exorings.print_ring_tau(rad_rings, exorings.y_to_tau(taun_rings))
@@ -149,7 +149,7 @@ alph2  = np.array([    0.0,     0.0,    1.0,    1.0,     0.,      0.])
 falph2 = InterpolatedUnivariateSpline(x_ti, alph2, k=1)
 frame_alph2 = falph2(frame)
 
-print '%d frames to generate' % frame.size
+print ('%d frames to generate' % frame.size)
 
 for now_hjd, now_zoom in zip(frame, frame_zoom):
     p1v.cla()
@@ -301,7 +301,7 @@ for now_hjd, now_zoom in zip(frame, frame_zoom):
         transform=p2v.transAxes, **tyc)
     # write out image
     fname = '_tmp%04d.png' % i
-    print 'Saving frame', fname
+    print ('Saving frame', fname)
     fig_ringsv.savefig(fname, facecolor=fig_ringsv.get_facecolor(), edgecolor='none')
     files.append(fname)
     i += 1
@@ -312,4 +312,3 @@ for now_hjd, now_zoom in zip(frame, frame_zoom):
 
 # QuickTime movie
 # ffmpeg -r 25 -vsync 1 -i _tmp%04d.png -f mp4 -qscale 5 -vcodec libx264 -pix_fmt yuv420p animation.mp4
-
