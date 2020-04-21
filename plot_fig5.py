@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 from matplotlib.ticker import MultipleLocator
 
-import exorings
+import exorings3 as exorings
 import j1407
 
 # no scientific notation for numbers on plots
@@ -38,7 +38,7 @@ for opt, arg in opts:
 print ('Reading in ring and disk parameters from %s' % fitsin)
 (res, taun_rings, rad_rings, dstar) = exorings.read_ring_fits(fitsin)
 
-exorings.print_ring_tau(rad_rings, exorings.y_to_tau(taun_rings))
+exorings.print_ring_tx(rad_rings, exorings.y_to_tx(taun_rings))
 
 # set up stellar disk
 kern = exorings.make_star_limbd(21, 0.8)
@@ -74,7 +74,7 @@ p2v = plt.axes([0.1, 0.11, 0.85, 0.20], sharex=p1v)
 p3v = plt.axes([0.1, 0.06, 0.85, 0.05], sharex=p1v)
 
 # draw the rings
-exorings.draw_rings_vector(rad_rings, exorings.y_to_tau(taun_rings), res[1], res[2], res[3], p1v)
+exorings.draw_rings_vector(rad_rings, exorings.y_to_tx(taun_rings), res[1], res[2], res[3], p1v)
 
 # draw the no photometry rings
 exorings.draw_badrings(rstart, rend, res[1], res[2], res[3], p1v)
@@ -83,7 +83,7 @@ exorings.draw_badrings(rstart, rend, res[1], res[2], res[3], p1v)
 star_line = mpl.patches.Rectangle((hjd_minr-50, res[0]-dstar/2.), 100, dstar, color='g', zorder=-15)
 p1v.add_patch(star_line)
 
-strip, convo, g = exorings.ellipse_strip(rad_rings, exorings.y_to_tau(taun_rings), \
+strip, convo, g = exorings.ellipse_strip(rad_rings, exorings.y_to_tx(taun_rings), \
     res[0], res[1], res[2], res[3], kern, dstar)
 
 # error bars on the photometry

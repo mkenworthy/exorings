@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-import exorings
+import exorings3 as exorings
 import j1407
 
 mearth = 5.97219e24 # kg
@@ -42,7 +42,7 @@ for opt, arg in opts:
 print ('Reading in ring and disk parameters from %s' % fitsin)
 (res, taun_rings, rad_rings, dstar) = exorings.read_ring_fits(fitsin)
 
-exorings.print_ring_tau(rad_rings, exorings.y_to_tau(taun_rings))
+exorings.print_ring_tx(rad_rings, exorings.y_to_tx(taun_rings))
 
 # set up stellar disk
 kern = exorings.make_star_limbd(21, 0.8)
@@ -72,7 +72,7 @@ ring_radius = rad_rings * 86400. * v # m
 rstartm = rstart * 86400. * v
 rendm = rend * 86400. * v
 
-exorings.print_ring_tau_latex(ring_radius / 1.e9, exorings.y_to_tau(taun_rings))
+exorings.print_ring_tx_latex(ring_radius / 1.e9, exorings.y_to_tx(taun_rings))
 
 # radius on top, period below
 fig_rad_per = plt.figure(figsize=(11, 5))
@@ -88,7 +88,7 @@ pr.axis((pr_min, pr_max, -0.2, 4.8))
 
 # kappa is mass per unit area for unity transmission blocking
 ring_radius_Mkm = ring_radius / 1.e9 # radius in million Km
-ring_tau = -np.log(exorings.y_to_tau(taun_rings)) # natural log
+ring_tau = -np.log(exorings.y_to_tx(taun_rings)) # natural log
 
 # now let's sanity check by plotting red points at mid of rings
 #  a  b  c  d
@@ -125,7 +125,7 @@ print ('kappa is %.3f cm2 g-1' % kappa)
 print ('total mass of all rings is %.3f Lunar masses' % np.sum(mass_ring))
 
 # optical depth of order unity and kappa
-pr.step(ring_radius / 1.e9, -np.log(exorings.y_to_tau(taun_rings)), \
+pr.step(ring_radius / 1.e9, -np.log(exorings.y_to_tx(taun_rings)), \
     color='black', linewidth=2, zorder=-20)
 
 # no photometry patches

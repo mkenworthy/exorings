@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-import exorings
+import exorings3 as exorings
 import j1407
 
 from scipy.optimize import fmin
@@ -297,7 +297,7 @@ else:
     rad_rings = np.append(rad_rings, (100.))
     taun_rings = np.append(taun_rings, (1000.))
 
-exorings.print_ring_tau(rad_rings, exorings.y_to_tau(taun_rings))
+exorings.print_ring_tx(rad_rings, exorings.y_to_tx(taun_rings))
 
 if read_in_disk_parameters:
     print ('Reading in disk parameters from %s' % fitsin_disk)
@@ -348,14 +348,14 @@ time0_grad = np.abs(grad_time-hjd_minr)
 
 # flux_color and flux_col
 # hold the color of the points for ingress and egress
-flux_color = np.chararray((time.shape))
-flux_color[:] = 'b'
-flux_color[(time > hjd_minr)] = 'r'
+#flux_color = np.chararray((time.shape))
+#flux_color[:] = 'b'
+#flux_color[(time > hjd_minr)] = 'r'
 
 # probably a better pythonic way to do this, but this works.
-flux_col = ''
-for b in flux_color.tolist():
-    flux_col = str.join('', (flux_col, b))
+#flux_col = ''
+#for b in flux_color.tolist():
+#    flux_col = str.join('', (flux_col, b))
 
 def plot_folded_phot(f):
     'plot folded J1407 light curve'
@@ -367,12 +367,36 @@ def plot_folded_phot(f):
     # gradient measurements
 #    h1.scatter(time0_grad,np.ones_like(time0_grad)*0.8)
 
+
+
+
+# errorbars definiton
+tc = dict(marker='.',ecolor='black', capsize=0 ,
+    elinewidth=3, ms=10, alpha = 0.5, markeredgecolor='none',
+    markeredgewidth=0.0, linewidth=0.0)
+
+def plot_folded(t, f, ferr, t_fold, ax):
+    """plot a light curve folded at the point t_fold, blue before, red after
+    t, f, fe - x-axis, flux, flux_error
+    t_fold - point to fold the light curve
+    t_range - x-axis plotting range
+    ax - axis to plot to
+    """
+    ingress = (t<t_fold)
+    egress  = (t>t_fold)
+
+    ax.errorbar(t[ingress], f[ingress], ferr[ingress],mfc='blue', **tc)
+    ax.errorbar(t[egress], f[egress], ferr[egress],mfc='red', **tc)
+
+
 fig_fold = plt.figure(figsize=(16, 6))
 
 h1 = fig_fold.add_subplot(111)
-plot_folded_phot(fig_fold)
+#plot_folded_phot(fig_fold)
 
-strip, dummy, g = exorings.ellipse_strip(rad_rings, exorings.y_to_tau(taun_rings), \
+plot_folded(time0, flux, flux_err, hjd_minr, h1)
+
+strip, dummy, g = exorings.ellipse_strip(rad_rings, exorings.y_to_tx(taun_rings), \
     res[0], res[1], res[2], res[3], kern, dstar)
 
 # g[0] = time

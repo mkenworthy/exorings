@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-import exorings
+import exorings3 as exorings
 import j1407
 
 # set sensible imshow defaults

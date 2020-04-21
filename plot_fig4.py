@@ -7,7 +7,7 @@ from matplotlib.patches import Rectangle
 from astropy.io import ascii
 from scipy.interpolate import interp1d
 
-import exorings
+import exorings3 as exorings
 
 # set sensible imshow defaults
 mpl.rc('image', interpolation='nearest', origin='lower', cmap='gray')
@@ -56,7 +56,7 @@ print ('plot file out is %s' % plotout)
 
 (res, taun_rings, rad_rings, dstar) = exorings.read_ring_fits(fitsin)
 
-exorings.print_ring_tau(rad_rings, exorings.y_to_tau(taun_rings))
+exorings.print_ring_tx(rad_rings, exorings.y_to_tx(taun_rings))
 
 # set up stellar disk
 kern = exorings.make_star_limbd(21, 0.8)
@@ -71,7 +71,7 @@ hjd_to_ring = interp1d(samp_t, samp_r, kind='linear')
 sst = exorings.print_disk_parameters(res, hjd_minr, samp_r)
 
 ## Calculate the best model fit given the rings and disk parameters
-strip, convo, g = exorings.ellipse_strip(rad_rings, exorings.y_to_tau(taun_rings), \
+strip, convo, g = exorings.ellipse_strip(rad_rings, exorings.y_to_tx(taun_rings), \
     res[0], res[1], res[2], res[3], kern, dstar)
 
 fit_time = g[0]
@@ -99,7 +99,8 @@ fig = plt.figure(figsize=(10, 12))
 # split into two panels - the top with the light curve and model
 # fit and the bottom with the zoomed in plots
 
-gs = gridspec.GridSpec(2, 1, height_ratios=[1, 4], wspace=0.0, hspace=0.05)
+#gs = gridspec.GridSpec(2, 1, height_ratios=[1, 4], wspace=0.0, hspace=0.05)
+gs = fig.add_gridspec(2, 1, height_ratios=[1, 4], wspace=0.0, hspace=0.05)
 
 ax1 = plt.subplot(gs[0, :])
 
@@ -121,7 +122,7 @@ ax1.vlines(hjd_minr, -1., 2., colors='k', linestyle='dashed')
 # array of days that we want a zoom into
 dt = np.array((-23, -22, -17, -16, -15, -14, -11, -10, -9, -8, -7, -6, \
 +3, +5, +9, +10, +11, +24))
-dt += 1.
+dt += 1
 
 # disk parameters as a latex table
 ax1.text(0.17, 0.60, sst, transform=ax1.transAxes, **ty)
@@ -131,18 +132,17 @@ ep_zoom = 0.5
 y_zoom = 0.4
 fiddle_time = 0.3
 
-# number of plots in the grid
-nx = 6
-ny = dt.size/nx
+import matplotlib.gridspec as gridspec
 
-og = gridspec.GridSpecFromSubplotSpec(ny, nx, subplot_spec=gs[1], wspace=0.0, hspace=0.0)
+og = gs[1].subgridspec(3,6, wspace=0.0, hspace=0.0)
 
-for i in xrange(dt.size):
+for i in np.arange(dt.size):
     print ("image %d " % i)
+    print(i.dtype)
     ep_center = hjd_minr + dt[i] + fiddle_time
-    ax = plt.subplot(og[i])
-
-#    ax.errorbar(time,flux, flux_err, zorder=-4, **eb)
+    ax = fig.add_subplot(og[i])
+    
+    ax.errorbar(time,flux, flux_err, zorder=-4, **eb)
 
     # first select all the pixels in that day range
     # then centroid on that subset of pixels with the zoomed box

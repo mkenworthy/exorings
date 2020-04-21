@@ -1,12 +1,14 @@
 # Exorings
 
+UPDATE: code is updated to run in Python 3, and includes `exorings3` which is a Python 3 version of the original `exorings` which runs under Python 2.7.
+
 <img src="https://raw.githubusercontent.com/mkenworthy/exorings/master/images/j1407_ring_model.png"
  alt="J1407 Ring Model" title="J1407b rings" align="right" />
 
 These are Python tools for displaying and fitting giant extrasolar planet ring systems,
 as detailed in Kenworthy and Mamajek (2015).
 
-If you have `git`, `python` and `astropy` installed, then this should get you editing rings from the J1407b model:
+If you have `git`, `python`, `astropy`, 'matplotlib` and `scipy` installed, then this should get you editing rings from the J1407b model:
 
     git clone https://github.com/mkenworthy/exorings.git
     cd exorings/
